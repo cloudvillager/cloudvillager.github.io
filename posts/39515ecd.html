@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>【操作系统】第二章：操作系统基础操作 | 拾光</title><meta name="keywords" content="操作系统"><meta name="author" content="水过无痕"><meta name="copyright" content="水过无痕"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="操作系统的启动 CPU, I&#x2F;O, 内存通过总线连接  DISK（硬盘）: 存放OS BIOS：基本I&#x2F;O处理系统 Bootloader: 加载OS到内存中  当电脑通电时，段寄存器CS和指令寄存器IP合在一起能够确定一个内存地址，例如CS:IP &#x3D; 0xf000:fff0。刚开始加电，以x86为例，bios会从0xf000:fff0这个地址开始执行，然后会执行接下来的一系列工作，包括第四点的自检">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【操作系统】第二章：操作系统基础操作">
+<meta property="og:url" content="https://shuigwh.cn/posts/39515ecd.html">
+<meta property="og:site_name" content="拾光">
+<meta property="og:description" content="操作系统的启动 CPU, I&#x2F;O, 内存通过总线连接  DISK（硬盘）: 存放OS BIOS：基本I&#x2F;O处理系统 Bootloader: 加载OS到内存中  当电脑通电时，段寄存器CS和指令寄存器IP合在一起能够确定一个内存地址，例如CS:IP &#x3D; 0xf000:fff0。刚开始加电，以x86为例，bios会从0xf000:fff0这个地址开始执行，然后会执行接下来的一系列工作，包括第四点的自检">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201031223527.png">
+<meta property="article:published_time" content="2020-10-31T14:32:48.000Z">
+<meta property="article:modified_time" content="2020-10-31T15:47:02.044Z">
+<meta property="article:author" content="水过无痕">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201031223527.png"><link rel="shortcut icon" href="/images/favicon.png"><link rel="canonical" href="https://shuigwh.cn/posts/39515ecd.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 水过无痕","link":"链接: ","source":"来源: 拾光","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: {"text":"Java,C++,Python,html,css,JavaScript","fontSize":"15px"},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-31 23:47:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="referrer" content="no-referrer-when-downgrade" /><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201012231537.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">24</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">11</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/talking/"><i class="fa-fw fa fa-comments"></i><span> 微语</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%90%AF%E5%8A%A8"><span class="toc-number">1.</span> <span class="toc-text">操作系统的启动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD-%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">中断&#x2F;异常和系统调用</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201031223527.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">拾光</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 文章</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/talking/"><i class="fa-fw fa fa-comments"></i><span> 微语</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">【操作系统】第二章：操作系统基础操作</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-10-31T14:32:48.000Z" title="发表于 2020-10-31 22:32:48">2020-10-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-31T15:47:02.044Z" title="更新于 2020-10-31 23:47:02">2020-10-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="操作系统的启动"><a href="#操作系统的启动" class="headerlink" title="操作系统的启动"></a>操作系统的启动</h1><ol>
+<li><p>CPU, I/O, 内存通过总线连接</p>
+</li>
+<li><p>DISK（硬盘）: 存放OS</p>
+<p>BIOS：基本I/O处理系统</p>
+<p>Bootloader: 加载OS到内存中</p>
+</li>
+<li><p>当电脑通电时，段寄存器CS和指令寄存器IP<code>合在一起</code>能够确定一个内存地址，例如CS:IP = 0xf000:fff0。刚开始加电，以x86为例，bios会从0xf000:fff0这个地址开始执行，然后会执行接下来的一系列工作，包括第四点的自检</p>
+</li>
+<li><p>POST(加电自检)，寻找显卡和执行BIOS。(显示器，键盘…是否正常)</p>
+</li>
+<li><p>步骤：</p>
+<ul>
+<li><p>BIOS：将Bootloader从磁盘的磁盘的引导扇区(在硬盘的第一个扇区，也就是512字节)加载到0x7c00，跳转到CS:IP=0000:7c00的内存区域(以便下一步)，这个时候cpu的控制权已经交给Bootloader了</p>
+</li>
+<li><p>Bootloader：将操作系统的代码和数据从硬盘加载到内存中；跳转到操作系统的起始地址，这个时候cpu的控制权已经交给os了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201031225845.png"></p>
+</li>
+</ul>
+</li>
+<li><p>系统调用：(来源于应用程序)应用程序主动向操作系统发出服务请求</p>
+</li>
+<li><p>异常：(来源于不良的应用程序)非法指令或其它花的处理状态(如：内存出错)</p>
+</li>
+<li><p>中断：(来源于外设)来自不同的硬件设备的计时器和网络的中断</p>
+</li>
+<li><p>为什么应用程序不能直接访问硬件而是通过操作系统？</p>
+<ul>
+<li>计算机运行时，内核是被信任的第三方</li>
+<li>只有内核可以执行特权指令</li>
+<li>为了方便应用程序</li>
+</ul>
+</li>
+<li><p>讨论的问题：操作系统如何设计和实现中断/异常和系统调用；他们三者的区别和特点。</p>
+<ol>
+<li><p>产生的源头：</p>
+<ul>
+<li>中断：外设(键盘/鼠标/网卡/声卡/显卡，可以产生各种事件)</li>
+<li>异常：应用程序意想不到的行为(例：异常，恶意程序，应用程序需要的资源未得到满足)</li>
+<li>系统调用(system call)：应用程序请求操作提供服务(例：打开/关闭/读写文件，发送网络包)</li>
+</ul>
+</li>
+<li><p>处理时间</p>
+<ul>
+<li>中断：异步（当这个事件产生的时候，我们的应用程序不知道他什么时候会产生，无法预测）</li>
+<li>异常：同步</li>
+<li>系统调用：同步或异步</li>
+</ul>
+<blockquote>
+<p>异步同步我没有理解，弹幕上说，异步不可预知，同步可以预知</p>
+</blockquote>
+</li>
+<li><p>响应</p>
+<ul>
+<li>中断：持续，对用户应用程序时透明的（因为操作系统把中断过程完成了，我们感知不到）</li>
+<li>异常：杀死或者重新执行意想不到的应用程序指令</li>
+<li>系统调用：等待和持续</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="中断-异常和系统调用"><a href="#中断-异常和系统调用" class="headerlink" title="中断/异常和系统调用"></a>中断/异常和系统调用</h1><ol>
+<li><p>中断/异常处理机制</p>
+<p>中断是外设的事件</p>
+<p>异常是CPU的事件</p>
+<p>中断/异常迫使CPU访问一些被中断和异常服务访问的功能</p>
+</li>
+<li><p>中断处理机制</p>
+<p>硬件：设置中断标记(CPU初始化)</p>
+<ul>
+<li>将内部/外部事件设置中断标记；</li>
+<li>中断事件的ID(程序访问的中断向量地址)</li>
+</ul>
+<p>软件(操作系统)：</p>
+<ul>
+<li>保存当前处理状态</li>
+<li>中断服务程序处理</li>
+<li>清除中断标记</li>
+<li>恢复之前保存的处理状态</li>
+</ul>
+</li>
+<li><p>异常处理机制</p>
+<p>异常：异常编号</p>
+<ul>
+<li>保存现场</li>
+<li>异常处理：杀死产生异常的程序；重新执行异常指令</li>
+<li>恢复现场</li>
+</ul>
+</li>
+<li><p>系统调用</p>
+<ul>
+<li>一条指令会触发一个系统调用</li>
+<li>程序访问主要是通过高层次的API接口而不是直接进行系统调用。</li>
+<li>通常情况下，存在与每个系统调用相关的序号，系统调用接口根据这些序号来维护表的索引</li>
+<li>系统调用接口调用内核态中预期的系统调用，并返回系统调用的状态和其它任何返回值</li>
+<li>用户不需要知道系统调用是如何实现的，只需要获取API和了解操作新系统将什么作为返回结果。操作系统接口的细节大部分都隐藏在API中，并通过运行程序支持的库来管理</li>
+<li>用户态：应用程序在执行的过程中，CPU执行的特权级的状态(很低，不能访问特殊机器指令和IO)</li>
+<li>内核态：应用程序在执行的过程中，CPU执行的特权级的状态(高，操作系统可以执行CPU任何一条指令)</li>
+<li>系统调用时涉及到特权级从用户态到内核态的转换，应用程序和操作系统有各自的堆栈，这两个变化比函数调用的开销更大，但更安全和可靠。(而程序调用是在一个栈空间实现参数的调用和返回)</li>
+</ul>
+</li>
+<li><p>跨越操作系统边界的开销</p>
+<ul>
+<li><p>在执行时间上超过程序调用</p>
+</li>
+<li><p>开销包括：</p>
+<p>建立中断/异常/系统调用号与对应服务例程映射关系的初始化开销；<br>建立内核堆栈(操作系统和应用程序的堆栈不一样)；<br>验证参数(操作系统会检查数据)；<br>内核态映射到用户态的地址空间，更新页面映射权限(内存拷贝开销)；<br>内核态独立地址空间TLB。</p>
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/iwanderu/article/details/103934399">https://blog.csdn.net/iwanderu/article/details/103934399</a></p>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">水过无痕</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://shuigwh.cn/posts/39515ecd.html">https://shuigwh.cn/posts/39515ecd.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://shuigwh.cn" target="_blank">拾光</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201031223527.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/images/wechatpay.png" target="_blank"><img class="post-qr-code-img" src="/images/wechatpay.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/images/alipay.png" target="_blank"><img class="post-qr-code-img" src="/images/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/4a128e89.html"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201023180435.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">抽象类与接口的区别</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 水过无痕</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'S9c6pAdzMOPgEpSm4qoShv7y-MdYXbMMI',
+      appKey: '9BFBXptM89Li5miROCxtvT9b',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" async="async" mobile="false"></script></div></body></html>
