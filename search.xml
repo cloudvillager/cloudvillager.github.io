@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>static关键字</title>
+      <link href="posts/ce244871.html"/>
+      <url>posts/ce244871.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>当在定义类的时候，类中都会有相应的属性和方法。而属性和方法都是通过创建本类对象调用的。当在调用对象的某个方法时，这个方法没有访问到对象的特有数据时，方法创建这个对象有些多余。可是不创建对象，方法又调用不了，这时就会想，那么我们能不能不创建对象，就可以调用方法呢？</p><p>可以的，我们可以通过static关键字来实现。static它是静态修饰符，一般用来修饰类中的成员。</p><hr><p>概念解读：</p><p>比如有个学生类</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    String name;</span><br><span class="line">    String schoolName = “淮南师范学院”;   <span class="comment">//学校名字</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>学生的年龄和姓名可能都不一样，但是学生都属于同一个学校，我们每次创建一个学生的时候，内存就会开辟一个空间，成员变量也会随之进来，，比如创建五个对象，学校名字变量也会创建五次，都是一样的，这就会照成浪费</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201101163257.png"></p><p>解决的方法:</p><p>变量schoolName从堆内存拿出来，放到一个地方去，让所有的学生对象共享一个schoolName变量</p><p>name，age属于对象自己的属性，对象自己特有的数据</p><p>schoolName应该作为对象的共享数据出现</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201101163625.png"></p><p>如何实现对象的共享数据？</p><p>在数据的前面加上static修饰</p><h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ol><li><p>被static修饰的成员变量属于类，不属于这个类的某个对象。</p><p><font color = "red">也就是说，多个对象在访问或修改static修饰的成员变量时，其中一个对象将static成员变量值进行了修改，其他对象中的static成员变量值跟着改变，即多个对象共享同一个static成员变量</font></p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> num = <span class="number">100</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Demo d1 = <span class="keyword">new</span> Demo();</span><br><span class="line">        Demo d2 = <span class="keyword">new</span> Demo();</span><br><span class="line">        d1.num = <span class="number">200</span>;</span><br><span class="line">        System.out.println(d1.num); <span class="comment">//结果为200</span></span><br><span class="line">        System.out.println(d2.num); <span class="comment">//结果为200</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>被static修饰的成员可以并且建议通过类名直接访问。</p></li></ol><h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ol><li><p>静态内容是优先于对象存在，只能访问静态（原因是因为，生命周期不同，静态优先于非静态存在内存中，静态出现的时候，非静态还没有出现），不能使用this/super（this代表本类引用，静态优于对象，没有对象，this就没有用，super同理）。静态修饰的内容存于静态区。</p></li><li><p>同一个类中，静态成员只能访问静态成员</p></li><li><p>main方法为静态方法仅仅为程序执行入口，它不属于任何一个对象，可以定义在任意类中。</p><blockquote><p>问题：</p><p>static修饰到底什么时候使用，应用场景</p><p>static修饰成员变量，成员方法</p><blockquote><p>成员变量加static，根据具体事物，具体分析问题</p><p>定义事物的时候，多个事物之间是否有共性的数据</p><p>请你将共性的数据定义为静态的成员变量</p></blockquote><blockquote><p>成员方法加static，跟着变量走</p><p>如果方法，没有调用过非静态成员，将方法定义为静态</p></blockquote></blockquote></li><li><p>多态调用中，编译</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>final关键字</title>
+      <link href="posts/af55167d.html"/>
+      <url>posts/af55167d.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>继承的出现提高了代码的复用性，并方便开发。但随之也有问题，有些类在描述完之后，不想被继承，或者有些类中的部分方法功能是固定的，不想让子类重写。可是当子类继承了这些特殊类之后，就可以对其中的方法进行重写，那怎么解决呢？</p><p>要解决上述的这些问题，需要使用到一个关键字final，final的意思为最终，不可变。final是个修饰符，它可以用来修饰类，类的成员，以及局部变量。</p><h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><h2 id="修饰类"><a href="#修饰类" class="headerlink" title="修饰类"></a>修饰类</h2><p>final修饰类不可以被继承，但是可以继承其他类。这种类在使用方式上没有任何变化，包括创建对象，调用方法，和之前没有区别，只是他不能被继承</p><h2 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h2><p>final修饰的方法不可以被覆盖,但父类中没有被final修饰方法，子类覆盖后可以加final。</p><h2 id="修饰变量"><a href="#修饰变量" class="headerlink" title="修饰变量"></a>修饰变量</h2><h3 id="普通变量"><a href="#普通变量" class="headerlink" title="普通变量"></a>普通变量</h3><p>final修饰的变量称为常量，这些变量只能赋值一次。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">int</span> i = <span class="number">20</span>;</span><br><span class="line">i = <span class="number">30</span>; <span class="comment">//赋值报错，final修饰的变量只能赋值一次</span></span><br></pre></td></tr></table></figure><h3 id="引用变量"><a href="#引用变量" class="headerlink" title="引用变量"></a>引用变量</h3><p>final还可以修饰引用变量</p><p>引用类型的变量值为对象地址值，地址值不能更改，但是地址内的对象属性值可以修改。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> Person p = <span class="keyword">new</span> Person();</span><br><span class="line">Person p2 = <span class="keyword">new</span> Person();</span><br><span class="line">p = p2; <span class="comment">//final修饰的变量p，所记录的地址值不能改变</span></span><br><span class="line">p.name = <span class="string">&quot;小明&quot;</span>;<span class="comment">//可以更改p对象中name属性值</span></span><br></pre></td></tr></table></figure><p>p不能为别的对象，而p对象中的name或age属性值可更改。</p><h3 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h3><p>修饰成员变量，需要在创建对象前赋值，否则报错。(当没有显式赋值时，多个构造方法的均需要为其赋值。)</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">final 修饰成员变量</span></span><br><span class="line"><span class="comment">成员变量，在堆内存，具有默认值</span></span><br><span class="line"><span class="comment">final修饰的成员变量，固定的不是内存的默认值</span></span><br><span class="line"><span class="comment">固定的是，成员变量的手动赋值，绝对不是内存的默认</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">Person</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> age = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>如果手动不赋值，可以在构造器利用构造器赋值</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> class <span class="title">Person</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> age;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(<span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>可以采用手动直接赋值，或者构造器的方法都可以，只要保证，<code>被final修饰的成员变量，只能被赋值一次</code>，<strong>在创建对象前赋值</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【操作系统】第二章：操作系统基础操作</title>
       <link href="posts/39515ecd.html"/>
       <url>posts/39515ecd.html</url>
