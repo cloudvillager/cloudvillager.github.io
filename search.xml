@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>代码块</title>
+      <link href="posts/57224242.html"/>
+      <url>posts/57224242.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="局部代码块"><a href="#局部代码块" class="headerlink" title="局部代码块"></a>局部代码块</h1><p>局部代码块是定义在方法或语句中</p><p>特点：</p><ul><li>以”{}”划定的代码区域，此时只需要关注作用域的不同即可</li><li>方法和类都是以代码块的方式划定边界的</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">&#123;</span><br><span class="line">         <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;普通代码块&quot;</span> + x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> x = <span class="number">99</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;代码块之外&quot;</span> + x);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>结果：</p><p>​        普通代码块1</p><p>​        代码块之外99</p><h1 id="构造代码块"><a href="#构造代码块" class="headerlink" title="构造代码块"></a>构造代码块</h1><p>构造代码块是定义在类中成员位置的代码块</p><p>特点：</p><ul><li><code>优先于构造方法</code>执行，构造代码块用于执行所有对象均需要的初始化动作</li><li><code>每创建一个对象均会执行一次构造代码块</code>。</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//构造代码块</span></span><br><span class="line">&#123;</span><br><span class="line">System.out.println(<span class="string">&quot;构造代码块执行了&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">Person()&#123;</span><br><span class="line">System.out.println(<span class="string">&quot;Person无参数的构造函数执行&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">Person(<span class="keyword">int</span> age)&#123;</span><br><span class="line"><span class="keyword">this</span>.age = age;</span><br><span class="line">System.out.println(<span class="string">&quot;Person（age）参数的构造函数执行&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonDemo</span></span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">Person p = <span class="keyword">new</span> Person();</span><br><span class="line">Person p1 = <span class="keyword">new</span> Person(<span class="number">23</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>结果：</p><p>构造代码块执行了</p><p>Person无参数的构造函数执行</p><p>Person（age）参数的构造函数执行”</p><blockquote><p>构造代码块是优先于构造方法，所以就算构造代码块放在后面，他也先执行构造代码块的方法，和顺序没有关系</p></blockquote><h1 id="静态代码块"><a href="#静态代码块" class="headerlink" title="静态代码块"></a>静态代码块</h1><p>静态代码块是定义在成员位置，使用static修饰的代码块。</p><p>特点：</p><ul><li>它<code>优先于主方法执行</code>、<code>优先于构造代码块执行</code>，当以任意形式第一次使用到该类时执行。</li><li>该类不管创建多少对象，静态代码块<code>只执行一次</code>。</li><li>可用于给静态变量赋值，用来给类进行初始化。</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">     <span class="comment">//静态代码块</span></span><br><span class="line"><span class="keyword">static</span>&#123;</span><br><span class="line">System.out.println(<span class="string">&quot;静态代码块执行了&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>访问修饰符</title>
+      <link href="posts/f941d9b7.html"/>
+      <url>posts/f941d9b7.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>在Java中提供了四种访问权限，使用不同的访问权限时，被修饰的内容会有不同的访问权限，以下表来说明不同权限的访问能力：</p><table><thead><tr><th align="left"></th><th align="center">public</th><th align="center">protected</th><th align="center">default</th><th align="center">private</th></tr></thead><tbody><tr><td align="left">同一类中</td><td align="center">√</td><td align="center">√</td><td align="center">√</td><td align="center">√</td></tr><tr><td align="left">同一包中</td><td align="center">√</td><td align="center">√</td><td align="center">√</td><td align="center"></td></tr><tr><td align="left">不同包的子类</td><td align="center">√</td><td align="center">√</td><td align="center"></td><td align="center"></td></tr><tr><td align="left">不同包中的无关类</td><td align="center">√</td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table><p>​     归纳一下：在日常开发过程中，编写的类、方法、成员变量的访问</p><ul><li>要想仅能在本类中访问使用private修饰；</li><li>要想本包中的类都可以访问不加修饰符即可；</li><li>要想本包中的类与其他包中的子类可以访问使用protected修饰</li><li>要想所有包中的所有类都可以访问使用public修饰。</li><li>注意：如果类用public修饰，则类名必须与文件名相同。一个文件中只能有一个public修饰的类。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>匿名对象与内部类</title>
       <link href="posts/307f30e5.html"/>
       <url>posts/307f30e5.html</url>
