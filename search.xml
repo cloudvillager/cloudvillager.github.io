@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>vscode默认终端修改为gitbash</title>
+      <link href="posts/7d72a066.html"/>
+      <url>posts/7d72a066.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ol><li><p>点开设置</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201106122527.png"></p></li><li><p>搜索<code>terminal.integrated.shell.windows</code></p><p> <img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201106122657.png"><br> 修改这里的配置文件</p></li><li><p>在这里添加路径</p><p> <img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201106122817.png"></p><blockquote><p>这里注意：要修改成为bin下面的bash.exe文件<br>直接复制路径可能会不存在，我不知道为什么，我这里用的everything复制的完整路径才可以，注意，原来的路径的<code>\</code>要改成<code>\\</code></p></blockquote></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 实用小工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vscode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>异常</title>
       <link href="posts/23a3bd72.html"/>
       <url>posts/23a3bd72.html</url>
