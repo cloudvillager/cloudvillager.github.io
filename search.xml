@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>常用api(包装类/System/Math/Arrays/大数据运算)</title>
+      <link href="posts/80704cea.html"/>
+      <url>posts/80704cea.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>回想下，在刚开始我们学习Java中的基本数据类型时，说Java中有8种基本的数据类型，可是这些数据是基本数据，想对其进行复杂操作，变的很难。怎么办呢？</p><h1 id="基本类型包装类"><a href="#基本类型包装类" class="headerlink" title="基本类型包装类"></a>基本类型包装类</h1><h2 id="基本类型包装类概述"><a href="#基本类型包装类概述" class="headerlink" title="基本类型包装类概述"></a>基本类型包装类概述</h2><p>在实际程序使用中，程序界面上用户输入的数据都是以字符串类型进行存储的。而程序开发中，我们需要把字符串数据，根据需求转换成指定的基本数据类型，如年龄需要转换成int类型，考试成绩需要转换成double类型等。那么，想实现字符串与基本数据之间转换怎么办呢？</p><p>Java中提供了相应的对象来解决该问题，基本数据类型对象包装类：java将基本数据类型值封装成了对象。封装成对象有什么好处？可以提供更多的操作基本数值的功能。</p><p>8种基本类型对应的包装类如下：</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201111231915.png"></p><p>其中需要注意int对应的是Integer，char对应的Character，其他6个都是基本类型首字母大写即可。</p><p>基本数据类型对象包装类特点：用于在基本数据和字符串之间进行转换。</p><ul><li><p>将字符串转成基本类型：</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201111232407.png"></p><p>parseXXX(String s);其中XXX表示基本类型，参数为可以转成基本类型的字符串，如果字符串无法转成基本类型，将会发生数字转换的问题 NumberFormatException</p><br /><p>我们这里主要就是看integer这个类</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Integer类中静态方法 parseInt(String s) 返回基本数据类型</span></span><br><span class="line"><span class="comment"> * 要求: 字符串必须是数字格式的</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = Integer.parseInt(<span class="string">&quot;12&quot;</span>);</span><br><span class="line">    System.out.println(i/<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>查看api，parseInt还有重载方法parseInt(String s, int radix)</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Integer类静态方法parseInt(String s, int radix)</span></span><br><span class="line"><span class="comment"> * radix基数,进制</span></span><br><span class="line"><span class="comment"> * &quot;110&quot;,2 含义 前面的数字是二进制的,但是方法parseInt运行结果都是十进制</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">function_1</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i = Integer.parseInt(<span class="string">&quot;110&quot;</span>, <span class="number">2</span>);</span><br><span class="line">System.out.println(i); <span class="comment">//6</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>将基本数值转成字符串有3种方式：</p><ul><li><p>基本类型直接与””相连接即可；34+””</p></li><li><p>调用String的valueOf方法；<strong>String.valueOf(34)</strong> ；</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201111233755.png"></p></li><li><p>调用包装类中的toString方法；<strong>Integer.toString(34)</strong> ；</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20201111233827.png"></p></li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> System类 </tag>
+            
+            <tag> Math类 </tag>
+            
+            <tag> Arrays类 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>日期和时间对象</title>
       <link href="posts/2af9b407.html"/>
       <url>posts/2af9b407.html</url>
