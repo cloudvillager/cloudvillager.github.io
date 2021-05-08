@@ -8,9 +8,17 @@
       <link href="posts/3abd123e.html"/>
       <url>posts/3abd123e.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><ol><li>idea新建springboot项目，勾选web，MyBatis，jdbc依赖，刚学不知道，以为正常来说可以直接启动，然后报了一个错误</li></ol><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20210508003837.png"></p><p>原因是：没有指定的数据库url，无法配置数据库</p><p>解决方法：</p><p>按照报错，我们添加数据库配置</p><p>我们需要application.yaml文件下添加如下配置</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">&quot;123456&quot;</span></span><br><span class="line">    <span class="comment">#?serverTimezone=UTC解决时区的报错</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://localhost:3306/wechat?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8</span></span><br><span class="line"><span class="comment">#    url: jdbc:mysql://localhost:3306/wechat?serverTimezone=GMT</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="comment">#    type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源</span></span><br></pre></td></tr></table></figure><p>为了确保数据库连接上，我们可以写个测试</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    System.out.println(dataSource.getClass());</span><br><span class="line">    <span class="comment">//获得连接</span></span><br><span class="line">    Connection connection =   dataSource.getConnection();</span><br><span class="line">    System.out.println(connection);</span><br><span class="line">    <span class="comment">//关闭连接</span></span><br><span class="line">    connection.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意，password这个属性的值一定要用引号 引起来，不然测试数据库的连接的时候会找不到，只能找到数据源，所以如果在这里测试到出现了异常，dataSource可以正常输出，但是connection找不到，提示拒绝访问数据等字样，</p><p>Access denied for user ‘root’@’localhost’ (using password: YES)</p><p>一定要看看之前yaml文件中的数据库密码有没有忘记引号</p><p>参考：</p><p><a href="https://www.jianshu.com/p/54db85befb01">https://www.jianshu.com/p/54db85befb01</a></p><p>参考：</p><p><a href="https://blog.csdn.net/u012862619/article/details/80482485">https://blog.csdn.net/u012862619/article/details/80482485</a></p><ol start="2"><li><p>在idea用内置的工具连接数据库，如果用户名密码正确，连接不上，可能是时区的问题，url后面可以添加<code>?serverTimezone=GMT</code></p><p>即</p><p><img src="https://cdn.jsdelivr.net/gh/cloudvillager/cloud@main/img/20210508004145.png"></p></li></ol><p>参考：<a href="https://segmentfault.com/a/1190000039648838">https://segmentfault.com/a/1190000039648838</a></p>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> Spring Boot </tag>
+            
+            <tag> MyBatis </tag>
+            
+        </tags>
       
     </entry>
     
@@ -27,9 +35,9 @@
       
         <tags>
             
-            <tag> 微信小程序 </tag>
-            
             <tag> Spring Boot </tag>
+            
+            <tag> 微信小程序 </tag>
             
         </tags>
       
