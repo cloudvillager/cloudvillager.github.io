@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>spring Boot-MyBatis报错Invalid bound statement (not found)....</title>
+      <link href="posts/c6c276ad.html"/>
+      <url>posts/c6c276ad.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>写社区项目公告功能，mybatis查询后台数据库的信息，测试方法的时候，遇到报错</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): com.shuigwh.dao.BmsBillboardDao.BillboardNewList</span><br></pre></td></tr></table></figure><p>意思是mapper与找不到xml文件</p><p>namespace id 方法名，类，都查过了，都没有问题</p><p>最后的查到原因是因为没有application.yaml文件中没有配置mapper映射器</p><p>在application.yaml文件配置</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="attr">mapper-locations:</span> <span class="string">classpath:mapper/*.xml</span></span><br></pre></td></tr></table></figure><p>参考：<a href="https://blog.csdn.net/qq_35981283/article/details/78590090">https://blog.csdn.net/qq_35981283/article/details/78590090</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Spring Boot </tag>
+            
+            <tag> MyBatis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Spring Boot整合MyBatis遇到的坑</title>
       <link href="posts/3abd123e.html"/>
       <url>posts/3abd123e.html</url>
@@ -364,11 +385,11 @@
             
             <tag> java </tag>
             
+            <tag> web </tag>
+            
             <tag> Cookie </tag>
             
             <tag> Session </tag>
-            
-            <tag> web </tag>
             
         </tags>
       
