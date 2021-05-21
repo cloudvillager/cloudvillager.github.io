@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Hexo 部署到 Github Pages 文件夹大小写问题</title>
+      <link href="posts/8dddef4b.html"/>
+      <url>posts/8dddef4b.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>昨天把Java分类整理了以下，之前写的分类是java,现在分类是Java，然后在本地测试没有任何问题，可以正常访问，但是我今天在学校手机上访问Java分类这个页面却发现出现了404，猜测可能没有部署成功，然后中文回来继续重新部署了一下，还是这个问题，本地正常访问，外网访问却是404</p><h2 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h2><p>本地没有问题，那可能就是github上面的静态页面出现了问题</p><p>登陆github，发现确实是的，分类我已经改成了Java，但是github依然是java,所以会导致路径不存在，产生404错误</p><br ><p>比如 Hexo 生成了一个 <code>Hackerrank in JS</code> Category文件夹，但是我后来把它改成了 <code>Hackerrank In JS</code>，即 in 的首字母大写了。Hexo会生成正确，但部署到 Github 上却老是不正确。</p><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>git 默认忽略文件名大小写，所以即使文件夹大小写变更，git 也检测不到。</p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><ul><li><p>进入到博客项目中 <code>.deploy_git</code>文件夹，修改 <code>.git</code> 下的 <code>config</code> 文件，将 <code>ignorecase=true</code> 改为 <code>ignorecase=false</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> .deploy_git</span><br><span class="line">vim .git/config</span><br></pre></td></tr></table></figure></li><li><p>删除博客项目中 <code>.deploy_git</code> 文件夹下的所有文件，并 push 到 Github 上, 这一步是清空你的 github.io 项目中所有文件。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm -rf *</span><br><span class="line">git commit -m <span class="string">&#x27;clean all file&#x27;</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li><li><p>使用 Hexo 再次生成及部署</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">hexo clean</span><br><span class="line">hexo d -g</span><br></pre></td></tr></table></figure></li></ul><hr><p>参考：</p><p><a href="https://segmentfault.com/q/1010000004339851">https://segmentfault.com/q/1010000004339851</a></p><p><a href="http://1mhz.me/2015/hexo-deploy-case-sensitive/">http://1mhz.me/2015/hexo-deploy-case-sensitive/</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> hexo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>JVM学习（一）--内存管理</title>
       <link href="posts/bd950511.html"/>
       <url>posts/bd950511.html</url>
